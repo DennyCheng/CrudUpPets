@@ -5,6 +5,8 @@ $(document).ready(function () {
   // $('#book-submit').on('click', postBook);
   $('#owner_submit').on('click',postOwner);
   $('#pet_submit').on('click',postPet);
+  $("#pet_list").on('click',".update",updatePet);
+
   getOwner();
   getPets();
   //loads drop down box
@@ -114,26 +116,68 @@ function getPets() {
     type: 'GET',
     url: '/pets',
     success: function (pets) {
-      console.log('GET /pets returns:', pets);
+      console.log('GET /pets returns:', pets)
+      console.log(pets);
       pets.forEach(function (pets) {
         var $el = $('<tr></tr>');
+        var petProperties = ["name","breed","color"];
+        console.log(pets.id);
         $el.append('<td>' + pets.first_name +' '+ pets.last_name + '</td>');
-        $el.append('<td>'+ pets.name + '</td>');
-        $el.append('<td>' + pets.breed + '</td>');
-        $el.append('<td>' + pets.color + '</td>');
-        $el.append('<td>' +'<button class ="update">Update</button>'+'</td>');
-        $el.append('<td>' +'<button class ="delete">Delete</button>'+'</td>');
-        $el.append('<td>' +'<button class ="checker">Check In/Out</button>'+'</td>');
+        // $el.append('<td> <input type ="text"/>'+ pets.name + '</td>');
+
+        petProperties.forEach(function(property){
+          var $input = $('<input type="text" id="'+property+'"name="'+property +'"/>');
+          $input.val(pets[property]);
+          var $holder = $('<td></td>');
+          $holder.append($input);
+          $el.append($holder);
+        });
+        $el.append('<td>' +'<button class ="update" data-id = "'+pets.id+'">Update</button>'+'</td>');
+        $el.append('<td>' +'<button class ="delete" data-id = "'+pets.id+'">Delete</button>'+'</td>');
+        $el.append('<td>' +'<button class ="checker" data-id = "'+pets.id+'">Check In/Out</button>'+'</td>');
         $('#pet_list').children().last().append($el);
       });
     },
-
     error: function (response) {
       console.log('GET /pets fail. No pets could be retrieved!');
     },
   });
 }
 
+function updatePet(){
+  var pet= {};
+  // var inputs = $(this).parent().children().serializeArray();
+  var inputs = $(this).parent().parent().children().children().serializeArray();
+  // console.log($(this).parent().children());
+
+  $.each(inputs,function(i,field){
+    pet[field.name] = field.value;
+    //taking all the values of the field
+  });
+    pet.id = $(this).data('id');
+  console.log('pets we are putting',pet);
+
+  var petId = $(this).data('id');
+  //the button is this, parent is the div and we put .data on the div
+
+  // updating a resource or the single book in this instance
+  $.ajax({
+    type: 'PUT',
+    url:'/pets/'+petId,
+    //appending the book id
+    //url data is different by convention and appending our ID to it
+    data: pet,
+    //sending data over
+    success: function(){
+      $('#pet_list').empty();
+      getPets();
+      //repopulate the book on the dom
+    },
+    error:function(){
+      console.log('Error PUT /pets/'+petId);
+    },
+  });
+}
 //everytime toggle class is selected we will send a post request to
 //document it on the visits
 

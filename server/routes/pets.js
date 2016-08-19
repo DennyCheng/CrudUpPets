@@ -37,7 +37,7 @@ router.get('/', function (req, res) {
     if (err) {
       res.sendStatus(500);
     }
-    client.query('SELECT first_name,last_name, name, breed, color '+
+    client.query('SELECT first_name,last_name, name, breed, color, pets.id '+
                 'FROM pets JOIN owners ON pets.owner_id = owners.id;',
                 function (err, result) {
           done(); // closes connection, I only have 10!
@@ -50,5 +50,37 @@ router.get('/', function (req, res) {
   });
 });
 
+router.put('/:id', function(req,res){
+  var id = req.params.id;
+  console.log("we are here shit");
+  console.log('put body is',id);
+
+  var pet = req.body;
+  console.log(pet);
+
+  pg.connect(connectionString, function(err,client,done){
+    if(err){
+      res.sendStatus(500);
+    }
+
+    client.query('UPDATE pets '+
+                  'SET VALUES name = $1, ' +
+                  'breed = $2, '+
+                  'color = $3, '+
+                  'WHERE id = $4;',
+
+                  [pet.name,pet.breed,pet.color,id],
+
+                  function(err,result){
+                    done();
+                  if(err){
+                    console.log('err',err);
+                    res.sendStatus(500);
+                  } else{
+                    res.sendStatus(200);
+                  }
+                });
+  });
+});
 
 module.exports = router;
