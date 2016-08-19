@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Stupid Pet Hotel</title>
+    <script src="/vendor/jquery.min.js"></script>
+    <script src="/scripts/client-app.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Taviraj" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="styles/styles.css" />
+</head>
+
+<body>
+    <main class="container">
+        <header>
+            <h1>Owners and Pets</h1>
+        </header>
+
+        <h2>Owners Registration</h2>
+        <div class="form-group">
+            <form id="owner_form">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" class="form-control" />
+
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" class="form-control" />
+                <button id="owner_submit" class="btn btn-default">Register</button>
+            </form>
+        </div>
+
+        <h2>Pets</h2>
+        <div class="form-group">
+            <form id="pets_form">
+
+                <select id="selectOwners">
+                </select>
+                <!--Add spacer -->
+                <label for="pet_name">Pet Name:</label>
+                <input type="text" id="pet_name" name="pet_name" class="form-control" />
+
+                <label for="pet_breed">Pet Breed:</label>
+                <input type="text" id="pet_breed" name="pet_breed" class="form-control" />
+
+                <label for="pet_color">Color:</label>
+                <input type="text" id="pet_color" name="pet_color" class="form-control" />
+
+                <button id="pet_submit" class="btn btn-default">Add Pet</button>
+            </form>
+        </div>
+
+        <div id="pet_list">
+            <table style="width:100%">
+                <tr>
+                    <th>Owner</th>
+                    <th>Pet</th>
+                    <th>Breed</th>
+                    <th>Color</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                    <th>Check In/Out</th>
+                </tr>
+            </table>
+
+        </div>
+
+    </main>
+</body>
+
+</html>

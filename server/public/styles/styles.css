@@ -1,0 +1,17 @@
+h1 {
+  font-family: 'Taviraj', serif;
+  color: indigo;
+}
+
+h2 {
+  color: gray;
+}
+
+tr{
+  background-color: aqua;
+  border: 1px solid black;
+}
+
+td{
+  border: 1px solid black;
+}
